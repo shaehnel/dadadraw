@@ -12,7 +12,7 @@ During development, run
 
     mvn spring-boot:run
     
-Now visit http://localhost:8080/.
+Now visit [http://localhost:8080/](http://localhost:8080/).
 
 To package for production, run
 
@@ -22,12 +22,12 @@ For production use, run
 
     java -jar target/dadadraw-0.0.1-SNAPSHOT.jar
 
-Now visit http://localhost:8080/.
+Now visit [http://localhost:8080/](http://localhost:8080/).
 
 ## Issues
 
 - (DONE) initial setup
-- (OPEN) web application with one page where a user can draw in one color
+- (DONE) web application with one page where a user can draw in one color
 - (OPEN) 2nd page where all current drawings are mirrored
 - (OPEN) another page with configuration options such as available colors
 - (OPEN) description on how this can be run in a dedicated WLAN
@@ -35,4 +35,5 @@ Now visit http://localhost:8080/.
 ## Tech stack
 
 Server part: Spring Boot
-Drawing Part: Zwibbler
+
+Drawing Part: [https://github.com/krisrak/html5-canvas-drawing-app](https://github.com/krisrak/html5-canvas-drawing-app), see [license](LICENSE.drawing.md)
