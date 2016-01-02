@@ -28,7 +28,8 @@ Now visit [http://localhost:8080/](http://localhost:8080/).
 
 - (DONE) initial setup
 - (DONE) web application with one page where a user can draw in one color
-- (OPEN) 2nd page where all current drawings are mirrored
+- (DONE) 2nd page where all current drawings are mirrored
+- (OPEN) work with layers - allow a user to delete his layer
 - (OPEN) another page with configuration options such as available colors
 - (OPEN) description on how this can be run in a dedicated WLAN
 

@@ -47,6 +47,7 @@ var drawTouch = function() {
         x = e.changedTouches[0].pageX;
         y = e.changedTouches[0].pageY-44;
         ctx.moveTo(x,y);
+        recordedDrawings.start(color, x, y);
     };
     var move = function(e) {
         e.preventDefault();
@@ -54,9 +55,14 @@ var drawTouch = function() {
         y = e.changedTouches[0].pageY-44;
         ctx.lineTo(x,y);
         ctx.stroke();
+        recordedDrawings.add(x, y);
+    };
+    var end = function() {
+        recordedDrawings.end();
     };
     document.getElementById("canvas").addEventListener("touchstart", start, false);
     document.getElementById("canvas").addEventListener("touchmove", move, false);
+    document.getElementById("canvas").addEventListener("touchend", end, false);
 };
 
 // prototype to    start drawing on pointer(microsoft ie) using canvas moveTo and lineTo
@@ -67,6 +73,7 @@ var drawPointer = function() {
         x = e.pageX;
         y = e.pageY-44;
         ctx.moveTo(x,y);
+        recordedDrawings.start(color, x, y);
     };
     var move = function(e) {
         e.preventDefault();
@@ -75,9 +82,14 @@ var drawPointer = function() {
         y = e.pageY-44;
         ctx.lineTo(x,y);
         ctx.stroke();
+        recordedDrawings.add(x, y);
+    };
+    var end = function() {
+        recordedDrawings.end();
     };
     document.getElementById("canvas").addEventListener("MSPointerDown", start, false);
     document.getElementById("canvas").addEventListener("MSPointerMove", move, false);
+    document.getElementById("canvas").addEventListener("MSPointerUp", end, false);
 };
 
 // prototype to    start drawing on mouse using canvas moveTo and lineTo
@@ -89,6 +101,7 @@ var drawMouse = function() {
         x = e.pageX;
         y = e.pageY-44;
         ctx.moveTo(x,y);
+        recordedDrawings.start(color, x, y);
     };
     var move = function(e) {
         if(clicked){
@@ -96,12 +109,74 @@ var drawMouse = function() {
             y = e.pageY-44;
             ctx.lineTo(x,y);
             ctx.stroke();
+            recordedDrawings.add(x, y);
         }
     };
     var stop = function(e) {
         clicked = 0;
+        recordedDrawings.end();
     };
     document.getElementById("canvas").addEventListener("mousedown", start, false);
     document.getElementById("canvas").addEventListener("mousemove", move, false);
     document.addEventListener("mouseup", stop, false);
 };
+
+var recordedDrawings = function() {
+
+    var points = [];
+    var width = -1, height = -1;
+    var color = "#000";
+
+    return {
+        start : startDrawing,
+        add : addPoint,
+        end : endDrawing
+    }
+
+    function startDrawing(argColor, x, y) {
+        color = argColor;
+        addPoint(x, y);
+    }
+
+    function addPoint(x, y) {
+        points.push({"x": x, "y": y});
+    }
+
+    function endDrawing() {
+        savePoints();
+    }
+
+    function clearPoints() {
+        points = [];
+    }
+
+    function savePoints() {
+        if (points.length > 0) {
+            // clone the points to avoid async issues
+            pushToServer(color, points.slice(0));
+            clearPoints();
+        }
+    }
+
+}();
+
+var pushToServer = function(color, points) {
+    var data = {
+        "color": color,
+        "points": points
+    }
+
+    $.ajax({
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        'type': 'POST',
+        'url': "lines",
+        'data': JSON.stringify(data),
+        'dataType': 'json',
+        'success': function() {
+            console.log("stored "+points.length+" points");
+        },
+    });
+}

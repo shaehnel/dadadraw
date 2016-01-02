@@ -1,4 +1,4 @@
-package com.trashgroup.dadadraw;
+package com.trashgroup.dadadraw.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
