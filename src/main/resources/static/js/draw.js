@@ -1,8 +1,8 @@
 
-var ctx, color = "#000";
+// globals, yeah!
+var ctx, canvasId, color;
 
 document.addEventListener( "DOMContentLoaded", function(){
-
     // setup a new canvas for drawing wait for device init
     setTimeout(function(){
        newCanvas();
@@ -11,25 +11,38 @@ document.addEventListener( "DOMContentLoaded", function(){
 }, false );
 
 // function to setup a new canvas for drawing
-function newCanvas(){
-    //define and resize canvas
-    document.getElementById("content").style.height = window.innerHeight-90;
-    var canvas = '<canvas id="canvas" width="'+window.innerWidth+'" height="'+(window.innerHeight-90)+'"></canvas>';
-    document.getElementById("content").innerHTML = canvas;
+function newCanvas() {
+    $.get("canvas", function(canvas) {
+        canvasId = canvas.canvasId;
+        setupOnScreen(canvas.initialColor);
+    });
 
-    // setup canvas
-    ctx = document.getElementById("canvas").getContext("2d");
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 5;
+    var setupOnScreen = function(initialColor) {
+        color = initialColor;
+        //define and resize canvas
+        document.getElementById("content").style.height = window.innerHeight-90;
+        var canvas = '<canvas id="canvas" width="'+window.innerWidth+'" height="'+(window.innerHeight-90)+'"></canvas>';
+        document.getElementById("content").innerHTML = canvas;
 
-    // setup to trigger drawing on mouse or touch
-    drawTouch();
-    drawPointer();
-    drawMouse();
+        // setup canvas
+        ctx = document.getElementById("canvas").getContext("2d");
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 5;
+
+        // setup to trigger drawing on mouse or touch
+        drawTouch();
+        drawPointer();
+        drawMouse();
+    }
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    pushToServer(color, [], true);
 }
 
 function selectColor(el){
-    for(var i=0;i<document.getElementsByClassName("palette").length;i++){
+    for(var i=0; i<document.getElementsByClassName("palette").length; i++){
         document.getElementsByClassName("palette")[i].style.borderColor = "#777";
         document.getElementsByClassName("palette")[i].style.borderStyle = "solid";
     }
@@ -160,8 +173,12 @@ var recordedDrawings = function() {
 
 }();
 
-var pushToServer = function(color, points) {
+var pushToServer = function(color, points, clear) {
+    clear = typeof clear !== 'undefined' ? clear : false;
+
     var data = {
+        "canvasId": canvasId,
+        "clear": clear,
         "color": color,
         "points": points
     }
