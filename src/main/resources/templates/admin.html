@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dada Draw</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/webjars/bootstrap-form-helpers/2.3.0/dist/css/bootstrap-formhelpers.min.css" />
+    <script type="text/javascript" src="webjars/jquery/2.1.4/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/dist/js/bootstrap-formhelpers.min.js"></script>
+    <script type="text/javascript" src="js/admin.js"/>
+</head>
+<body>
+    <h1>Administration</h1>
+
+    <h2>Available Colors</h2>
+    <div id="colors">
+        <form class="form-inline" data-th-each="color : ${colors}" th:id="'form-'+${#strings.substring(color.hexRGB,1,#strings.length(color.hexRGB))}">
+            <div class="form-group">
+                <div class="bfh-colorpicker" th:attr="data-name='color-'+${color.hexRGB},data-color=${color.hexRGB}"></div>
+            </div>
+            <button type="button" class="btn btn-danger" th:onClick="'removeColor(\''+${color.hexRGB}+'\');'">Remove</button>
+        </form>
+    </div>
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="bfh-colorpicker" data-name="new-color"></div>
+        </div>
+        <button type="button" class="btn btn-primary" onClick="addColor()">Add</button>
+    </form>
+</body>
+</html>

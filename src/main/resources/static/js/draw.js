@@ -188,11 +188,11 @@ var pushToServer = function(color, points, clear) {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        'type': 'POST',
-        'url': "lines",
-        'data': JSON.stringify(data),
-        'dataType': 'json',
-        'success': function() {
+        type: 'POST',
+        url: "lines",
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function() {
             console.log("stored "+points.length+" points");
         },
     });
