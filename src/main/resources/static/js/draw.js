@@ -15,6 +15,7 @@ function newCanvas() {
     $.get("canvas", function(canvas) {
         canvasId = canvas.canvasId;
         setupOnScreen(canvas.initialColor);
+        setupColorBox(canvas.initialColor);
     });
 
     var setupOnScreen = function(initialColor) {
@@ -33,6 +34,10 @@ function newCanvas() {
         drawTouch();
         drawPointer();
         drawMouse();
+    }
+
+    var setupColorBox = function(color) {
+        $("#colorbox").css("background-color", color);
     }
 }
 

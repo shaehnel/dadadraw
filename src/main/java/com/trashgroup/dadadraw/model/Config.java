@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 public class Config {
     private List<Color> colors = new ArrayList<>();
+    int currentColorIndex = 0;
 
     public Config() {
         colors.add(new Color("#4f3610"));
@@ -28,6 +29,16 @@ public class Config {
     }
 
     public void removeColor(Color color) {
-        colors.remove(color);
+        if (colors.size() > 1) {
+            colors.remove(color);
+        }
+    }
+
+    public Color nextColor() {
+        if (currentColorIndex >= colors.size()) {
+            currentColorIndex = 0;
+        }
+        return colors.get(currentColorIndex++);
+
     }
 }

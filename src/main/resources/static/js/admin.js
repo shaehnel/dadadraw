@@ -1,7 +1,10 @@
 
 
 function removeColor(colorId) {
-
+    if ($("div[id=colors] > form").length < 2) {
+        alert("You need at least one color.");
+        return;
+    }
     $.ajax({
         url: "admin/color/"+colorId.replace("#", "%23"),
         type: 'DELETE',
