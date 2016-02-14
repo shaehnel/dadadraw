@@ -20,9 +20,12 @@ To package for production, run
 
 For production use, run
 
-    java -jar target/dadadraw-0.0.1-SNAPSHOT.jar
+    java -jar target/dadadraw-0.0.1-SNAPSHOT.jar -Dserver.port=80
 
-Now visit [http://localhost:8080/](http://localhost:8080/).
+Now visit [http://localhost:80/](http://localhost:80/).
+
+Please note that on Unix-based operating systems (Mac OSX, Linux) you need to run the command as `sudo` if you want to 
+run it on port 80.
 
 ## Issues
 
